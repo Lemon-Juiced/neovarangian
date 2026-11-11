@@ -1,16 +1,13 @@
 # Neo-Varangian
-An alternate-history mod for Crusader Kings III that expands Norse adventuring. Kings can launch Varangian Ventures of their own, Normans can reclaim their Norse warrior heritage, and Norse or Norman rulers can seize Constantinople and found a **Varangian Empire** in place of the Latin one.
-
+An alternate-history mod for Crusader Kings III that expands Norse adventuring. Kings can launch Varangian Ventures of their own, Normans can reclaim their Norse warrior heritage, and Norse or Norman rulers can seize Constantinople and found a **Varangian Empire** in place of the Latin one.  
 - **Game version:** 1.20.1.2
 - **DLC:** *Northern Lords* is needed for the Grand Varangian Venture and the Norman decision. The Varangian Empire needs no DLC.
 - **Saves:** start a new game. The mod adds a new empire title, which existing saves won't have.
 - **Compatibility:** no base-game files are replaced. Everything is new content (prefixed `nv_`), so it should sit alongside most other mods.
 
 ## Features
-
 ### Grand Varangian Venture
-A king-sized version of the Varangian Adventure war.
-
+A king-sized version of the Varangian Adventure war.  
 - **Kings only.** Counts, dukes, emperors and hegemons can't use it.
 - **Same requirements as the normal venture:** the Varangian Adventurers innovation, Tribal era, prestige level, and a target that doesn't border you.
 - **Once per lifetime.** It's used up when you declare, win or lose; your heir gets their own chance.
@@ -19,14 +16,12 @@ A king-sized version of the Varangian Adventure war.
 - **Victory:** the conquered duchy becomes a new kingdom named after it, so conquering Normandy creates the Kingdom of Normandy. Your old kingdom is left behind and its lands go independent.
 
 ### Remember the Northmen (Norman decision)
-The head of the Norman culture can add the **Coastal Warriors** tradition, which unlocks Varangian Veterans, Vigmen, Bondi and Huscarls.
-
+The head of the Norman culture can add the **Coastal Warriors** tradition, which unlocks Varangian Veterans, Vigmen, Bondi and Huscarls.  
 - It's added on top of existing traditions, with no re-hybridizing and no swapping out another tradition.
 - **Cost:** 1,000 prestige, half the usual cost of adopting a tradition.
 
 ### The Varangian Empire (Nordokratia / Normanokratia)
-A Norse alternative to Frankokratia. It doesn't need a Catholic crusade, so pagan Norse can found it too.
-
+A Norse alternative to Frankokratia. It doesn't need a Catholic crusade, so pagan Norse can found it too.  
 1. **Plan the Taking of Miklagard** (decision). Available to an independent Norse or Norman king or emperor at prestige level 2 while a Byzantine Emperor exists. Costs 150 prestige and unlocks the war.
 2. **The war.** It's called *Nordokratia* for Norse rulers and *Normanokratia* for Normans. You fight the Byzantine Emperor for one Byzantine kingdom.
    - **Win:** you found the Varangian Empire and move your capital there, to Constantinople if you hold it. The empire is Feudal and never Administrative.
@@ -52,8 +47,7 @@ Most balance numbers are easy to find:
 | Varangian Empire decision costs and requirements | `common/decisions/nv_varangian_dominion_decisions.txt` |
 | Which cultures count as Norse, Norman or Byzantine loyalist | `common/scripted_triggers/nv_varangian_dominion_triggers.txt` |
 
-## File overview
-
+## File Overview
 ```
 common/
   casus_belli_types/       nv_grand_varangian_venture.txt, nv_varangian_dominion_wars.txt
@@ -71,7 +65,7 @@ localization/english/      nv_neovarangian_l_english.yml, nv_varangian_dominion_
 
 Localization files must be saved as UTF-8 **with BOM**, or CK3 won't load them.
 
-## Known limitations
+## Known Limitations
 - The mod is untested in a full playthrough. If something misbehaves, check `Documents/Paradox Interactive/Crusader Kings III/logs/error.log` for lines mentioning `nv_`.
 - English localization only.
 - Founding the Varangian Empire is player-only, so the AI can never claim it before you. Once it exists, the AI uses the Legitimize, Expunge and Seize Imperial Duchy options normally.
