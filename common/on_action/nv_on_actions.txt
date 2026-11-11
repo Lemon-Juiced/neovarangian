@@ -1,7 +1,51 @@
 # Neo-Varangian on_actions.
-# Only adds to the on_actions list, so it merges with the base game's yearly_global_pulse.
+# Each base on_action below only gets an on_actions list added, so it merges with the base game's version.
 yearly_global_pulse = {
 	on_actions = { nv_varangian_yearly_pulse }
+}
+
+on_birth_child = {
+	on_actions = { nv_blood_birth_on_action }
+}
+
+on_game_start = {
+	on_actions = { nv_blood_game_start_on_action }
+}
+
+random_yearly_everyone_pulse = {
+	on_actions = { nv_blood_backdate_on_action }
+}
+
+# Root is any character, once a year.
+# Viking and Varangian are granted from dozens of base-game events, so instead of
+# hooking each one, carriers pass the blood traits to existing children here.
+nv_blood_backdate_on_action = {
+	trigger = {
+		OR = {
+			has_trait = viking
+			has_trait = varangian
+			has_trait = nv_blood_of_the_vikings
+			has_trait = nv_blood_of_the_varangians
+		}
+		any_child = { is_alive = yes }
+	}
+	effect = {
+		nv_backdate_blood_traits_effect = yes
+	}
+}
+
+# Root is the newborn child.
+nv_blood_birth_on_action = {
+	effect = {
+		nv_inherit_blood_traits_effect = yes
+	}
+}
+
+# No root.
+nv_blood_game_start_on_action = {
+	effect = {
+		nv_seed_blood_traits_effect = yes
+	}
 }
 
 # Root does not exist (global pulse).

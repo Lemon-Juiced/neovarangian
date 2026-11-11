@@ -1,0 +1,73 @@
+##################################################
+# Neo-Varangian: blood trait inheritance
+##################################################
+
+# Root: a character. Gives them the blood traits their parents carry.
+# Uses the biological father, since this is about blood.
+nv_inherit_blood_traits_effect = {
+	if = {
+		limit = {
+			NOT = { has_trait = nv_blood_of_the_vikings }
+			OR = {
+				mother ?= {
+					OR = {
+						has_trait = viking
+						has_trait = nv_blood_of_the_vikings
+					}
+				}
+				real_father ?= {
+					OR = {
+						has_trait = viking
+						has_trait = nv_blood_of_the_vikings
+					}
+				}
+			}
+		}
+		add_trait = nv_blood_of_the_vikings
+	}
+	if = {
+		limit = {
+			NOT = { has_trait = nv_blood_of_the_varangians }
+			OR = {
+				mother ?= {
+					OR = {
+						has_trait = varangian
+						has_trait = nv_blood_of_the_varangians
+					}
+				}
+				real_father ?= {
+					OR = {
+						has_trait = varangian
+						has_trait = nv_blood_of_the_varangians
+					}
+				}
+			}
+		}
+		add_trait = nv_blood_of_the_varangians
+	}
+}
+
+# Root: a character with Viking, Varangian or a blood trait.
+# Back-dates the blood traits to children (and their children)
+# born before the parent earned the trait.
+nv_backdate_blood_traits_effect = {
+	every_child = {
+		limit = { is_alive = yes }
+		nv_inherit_blood_traits_effect = yes
+		every_child = {
+			limit = { is_alive = yes }
+			nv_inherit_blood_traits_effect = yes
+		}
+	}
+}
+
+# No root. Seeds the traits for characters alive at game start.
+# Run twice so grandchildren of a start-date Viking also get it.
+nv_seed_blood_traits_effect = {
+	every_living_character = {
+		nv_inherit_blood_traits_effect = yes
+	}
+	every_living_character = {
+		nv_inherit_blood_traits_effect = yes
+	}
+}

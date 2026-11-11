@@ -20,6 +20,16 @@ The head of the Norman culture can add the **Coastal Warriors** tradition, which
 - It's added on top of existing traditions, with no re-hybridizing and no swapping out another tradition.
 - **Cost:** 1,000 prestige, half the usual cost of adopting a tradition.
 
+### Blood of the Vikings / Blood of the Varangians
+Two hereditary traits that keep a warrior bloodline going.
+
+- **Inheritance:** a child is born with Blood of the Vikings if their mother or biological father has the **Viking** trait or Blood of the Vikings. Blood of the Varangians works the same way with the **Varangian** trait.
+- **Passes down every generation,** as long as one parent carries it.
+- **Stacks:** a child can have both blood traits, and can still earn Viking or Varangian on top of them.
+- **Each trait gives** +3 prowess, +1 martial and +10% monthly prestige.
+- **At game start,** children and grandchildren of starting Vikings and Varangians get the traits too.
+- **Back-dated:** if a parent earns Viking or Varangian after their children are born, those children and grandchildren also get the blood trait within a year.
+
 ### The Varangian Empire (Nordokratia / Normanokratia)
 A Norse alternative to Frankokratia. It doesn't need a Catholic crusade, so pagan Norse can found it too.  
 1. **Plan the Taking of Miklagard** (decision). Available to an independent Norse or Norman king or emperor at prestige level 2 while a Byzantine Emperor exists. Costs 150 prestige and unlocks the war.
@@ -46,6 +56,8 @@ Most balance numbers are easy to find:
 | Norman decision cost | `common/decisions/nv_norman_decisions.txt` |
 | Varangian Empire decision costs and requirements | `common/decisions/nv_varangian_dominion_decisions.txt` |
 | Which cultures count as Norse, Norman or Byzantine loyalist | `common/scripted_triggers/nv_varangian_dominion_triggers.txt` |
+| Blood trait bonuses | `common/traits/nv_traits.txt` |
+| Who inherits the blood traits | `common/scripted_effects/nv_blood_trait_effects.txt` |
 
 ## File Overview
 ```
@@ -55,18 +67,21 @@ common/
   customizable_localization/ nv_custom_loc.txt           (Nordokratia / Normanokratia naming)
   decisions/               nv_norman_decisions.txt, nv_varangian_dominion_decisions.txt
   landed_titles/           nv_landed_titles.txt          (e_varangian_empire)
-  on_action/               nv_on_actions.txt             (yearly clean-up of a fallen empire)
+  on_action/               nv_on_actions.txt             (yearly clean-up of a fallen empire, blood trait inheritance)
   script_values/           nv_grand_varangian_venture_values.txt
-  scripted_effects/        nv_varangian_dominion_effects.txt
+  scripted_effects/        nv_varangian_dominion_effects.txt, nv_blood_trait_effects.txt
   scripted_triggers/       nv_varangian_dominion_triggers.txt
+  traits/                  nv_traits.txt                 (Blood of the Vikings / Varangians)
 events/                    nv_varangian_dominion_events.txt
-localization/english/      nv_neovarangian_l_english.yml, nv_varangian_dominion_l_english.yml
+gfx/interface/icons/traits/ blood_of_the_vikings.dds, blood_of_the_varangians.dds
+localization/english/      nv_neovarangian_l_english.yml, nv_varangian_dominion_l_english.yml, nv_traits_l_english.yml
 ```
 
 Localization files must be saved as UTF-8 **with BOM**, or CK3 won't load them.
 
 ## Known Limitations
-- The mod is untested in a full playthrough. If something misbehaves, check `Documents/Paradox Interactive/Crusader Kings III/logs/error.log` for lines mentioning `nv_`.
+- The mod is semi-untested in a full playthrough. If something misbehaves, check `Documents/Paradox Interactive/Crusader Kings III/logs/error.log` for lines mentioning `nv_`.
 - English localization only.
 - Founding the Varangian Empire is player-only, so the AI can never claim it before you. Once it exists, the AI uses the Legitimize, Expunge and Seize Imperial Duchy options normally.
+- Back-dated blood traits can take up to a year to appear, and one generation more each following year. Characters who are secretly someone's biological child don't get a back-dated trait from that parent. They still inherit it normally if they're born after the parent earned it.
 - AI kings can use the Grand Varangian Venture under the base-game venture's AI rules. Expect the occasional AI king to abandon their homeland.

@@ -1,0 +1,8 @@
+﻿l_english:
+ trait_nv_blood_of_the_vikings:0 "Blood of the Vikings"
+ trait_nv_blood_of_the_vikings_desc:0 "This character is descended from those who went a-viking, and the call of the sea runs strong in their veins."
+ trait_nv_blood_of_the_vikings_character_desc:0 "[ROOT.Char.GetFirstNameNoTooltip] is descended from those who went a-viking, and the call of the sea runs strong in [ROOT.Char.GetHerHis] veins."
+
+ trait_nv_blood_of_the_varangians:0 "Blood of the Varangians"
+ trait_nv_blood_of_the_varangians_desc:0 "This character is descended from the Varangians, who sailed east down the great rivers to win fame and gold in Miklagard."
+ trait_nv_blood_of_the_varangians_character_desc:0 "[ROOT.Char.GetFirstNameNoTooltip] is descended from the Varangians, who sailed east down the great rivers to win fame and gold in Miklagard."

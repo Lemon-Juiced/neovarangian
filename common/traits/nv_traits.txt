@@ -1,0 +1,56 @@
+##################################################
+# Neo-Varangian: hereditary blood traits
+# Granted at birth if either parent has the earned
+# trait (viking / varangian) or the matching blood trait.
+# See common/scripted_effects/nv_blood_trait_effects.txt
+##################################################
+
+nv_blood_of_the_vikings = {
+	category = fame
+	icon = blood_of_the_vikings.dds
+
+	prowess = 3
+	martial = 1
+	monthly_prestige_gain_mult = 0.1
+
+	shown_in_ruler_designer = no
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_nv_blood_of_the_vikings_desc
+			}
+			desc = trait_nv_blood_of_the_vikings_character_desc
+		}
+	}
+
+	ai_boldness = 5
+}
+
+nv_blood_of_the_varangians = {
+	category = fame
+	icon = blood_of_the_varangians.dds
+
+	prowess = 3
+	martial = 1
+	monthly_prestige_gain_mult = 0.1
+
+	shown_in_ruler_designer = no
+
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = {
+					NOT = { exists = this }
+				}
+				desc = trait_nv_blood_of_the_varangians_desc
+			}
+			desc = trait_nv_blood_of_the_varangians_character_desc
+		}
+	}
+
+	ai_boldness = 5
+}
