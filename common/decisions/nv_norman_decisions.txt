@@ -1,0 +1,56 @@
+##################################################
+# Neo-Varangian: Norman decisions
+##################################################
+
+# Lets the head of the Norman culture reclaim Coastal Warriors (the tradition that unlocks
+# Varangian Veterans, Vigmen, Bondi and Huscarls) as an extra tradition, without
+# re-hybridizing and without giving up an existing tradition slot.
+nv_norman_reclaim_coastal_warriors_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/decision_culture.dds"
+	}
+	desc = nv_norman_reclaim_coastal_warriors_decision_desc
+	selection_tooltip = nv_norman_reclaim_coastal_warriors_decision_tooltip
+	decision_group_type = major
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 120
+		duchy = 120
+		kingdom = 120
+		empire = 120
+		hegemony = 120
+	}
+
+	is_shown = {
+		has_fp1_dlc_trigger = yes
+		culture ?= culture:norman
+		culture.culture_head ?= root
+		NOT = { culture = { has_cultural_tradition = tradition_fp1_coastal_warriors } }
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+	}
+
+	cost = {
+		# Half the base cost of adopting a tradition (2000).
+		prestige = 1000
+	}
+
+	effect = {
+		culture = {
+			add_culture_tradition = tradition_fp1_coastal_warriors
+		}
+		add_prestige_experience = minor_prestige_value
+	}
+
+	ai_potential = {
+		always = yes
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}

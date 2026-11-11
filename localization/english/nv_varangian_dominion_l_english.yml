@@ -1,0 +1,75 @@
+﻿l_english:
+ # Title
+ e_varangian_empire:0 "Varangian Empire"
+ e_varangian_empire_adj:0 "Varangian"
+
+ # Era names
+ nv_nordokratia:0 "Nordokratia"
+ nv_normanokratia:0 "Normanokratia"
+
+ # Plan the Taking of Miklagard
+ nv_plan_miklagard_decision:0 "Plan the Taking of Miklagard"
+ nv_plan_miklagard_decision_desc:0 "For generations our warriors have sailed down the rivers to Miklagard, the Great City, to fill the Emperor's guard and his coffers. Why serve the Emperor, when we could sit upon his throne?"
+ nv_plan_miklagard_decision_tooltip:0 "Prepare a war to seize a [kingdom|E] from [GetTitleByKey('e_byzantium').GetName] and found the [GetTitleByKey('e_varangian_empire').GetName]"
+ nv_plan_miklagard_decision_confirm:0 "To the Great City!"
+ nv_plan_miklagard_decision_effect_tt:0 "Unlocks the [ROOT.Char.Custom('NvDominionName')] [casus_belli|E] against the [GetTitleByKey('e_byzantium').GetName]. Winning it founds the [GetTitleByKey('e_varangian_empire').GetName], and you will leave your homeland behind"
+ nv_must_be_independent_tt:0 "Must be [independent|E]"
+
+ # Nordokratia / Normanokratia war
+ nv_varangian_dominion_cb:0 "Varangian Dominion"
+ NV_VARANGIAN_DOMINION_CB_NAME:0 "[ATTACKER.Custom('NvDominionName')]: [TITLE.GetName]"
+ NV_VARANGIAN_DOMINION_WAR_NAME:0 "[ConcatIfNeitherEmpty('$ORDER|q$', ' ')][ATTACKER.Custom('NvDominionName')] of [TITLE.GetBaseNameNoTooltip]"
+ NV_VARANGIAN_DOMINION_WAR_NAME_BASE:0 "[ATTACKER.Custom('NvDominionName')]"
+ nv_varangian_dominion.summaries.empire:0 "You will found the [GetTitleByKey('e_varangian_empire').GetName] and move your [capital|E] to the conquered [kingdom|E]"
+ nv_varangian_dominion.summaries.homeland:0 "Your homeland is left behind: it passes to a close relative as an [independent|E] realm, or breaks apart if there is nobody to take it"
+ nv_miklagard_ambition_lost_tt:0 "Your ambition for Miklagard is broken. You must plan the Taking of Miklagard again to try once more"
+ NV_HOMELAND_TRUCE_NAME:0 "Parted ways as kin after [SCOPE.sC('nv_varangian_founder').GetUINameNotMe|U] sailed for Miklagard"
+
+ # Seize Imperial Duchy (Varangian) - usable by both sides
+ nv_seize_imperial_duchy_cb:0 "Seize Imperial Duchy (Varangian)"
+ NV_SEIZE_IMPERIAL_DUCHY_CB_NAME:0 "Seize Imperial Duchy (Varangian)"
+ NV_SEIZE_IMPERIAL_DUCHY_WAR_NAME:0 "[ATTACKER.GetPrimaryTitle.GetAdjective] Seizure of the Imperial [TITLE.GetBaseName]"
+ NV_SEIZE_IMPERIAL_DUCHY_WAR_NAME_BASE:0 "[ATTACKER.GetPrimaryTitle.GetAdjective][DEFENDER.GetPrimaryTitle.GetName]"
+
+ # Legitimize Varangian Dominion
+ nv_legitimize_varangian_dominion_decision:0 "Legitimize Varangian Dominion"
+ nv_legitimize_varangian_dominion_decision_desc:0 "The Greeks still whisper of their Emperor, but the axe-bearers who once guarded his throne now sit upon it. Let these lands learn that the North has come to stay."
+ nv_legitimize_varangian_dominion_decision_tooltip:0 "Add a [kingdom|E] to the [de_jure|E] land of [GetTitleByKey('e_varangian_empire').GetName]"
+ nv_legitimize_varangian_dominion_decision_confirm:0 "This land is ours by right of the axe"
+ nv_is_varangian_emperor_tt:0 "Your [primary_title|E] is [GetTitleByKey('e_varangian_empire').GetName]"
+ nv_varangian_capital_byzantine_kingdom_tt:0 "Your [capital|E] is in a [de_jure|E] [kingdom|E] of [GetTitleByKey('e_byzantium').GetName]"
+ nv_gain_byz_kingdom_de_jure_tt:0 "[GetTitleByKey('e_varangian_empire').GetName] gains [de_jure|E] possession of a [GetTitleByKey('e_byzantium').GetAdjective] [kingdom|E] within your [realm|E]"
+ nv_legitimize_varangian_control_tt:0 "[county_control|E] increases throughout the new [GetTitleByKey('e_varangian_empire').GetAdjective] [kingdom|E]"
+ nv_legitimize_varangian_cultural_acceptance_tt:0 "[cultures|E] in the [kingdom|E] gain [cultural_acceptance|E] with your [culture|E]"
+ nv_varangian_de_jure_lost_on_title_loss_tt:0 "@warning_icon! #X If [GetTitleByKey('e_varangian_empire').GetName] falls, its [de_jure|E] [titles|E] return to being [GetTitleByKey('e_byzantium').GetAdjective]"
+ nv_byzantines_threaten_varangian_titles_tt:0 "@warning_icon! #X [GetTitleByKey('e_byzantium').GetAdjective] [rulers|E] may revert [GetTitleByKey('e_varangian_empire').GetAdjective] [de_jure|E] [titles|E] they possess"
+ nv_cultural_acceptance_varangians_legitimized:0 "Varangian Dominion Legitimized"
+ nv_every_county_in_kingdom:0 "Every [county|E] in the [kingdom|E] you control"
+
+ # Expunge Varangian Dominion
+ nv_expunge_varangian_dominion_decision:0 "Expunge Varangian Dominion"
+ nv_expunge_varangian_dominion_decision_desc:0 "The axe-bearers we once paid to guard the Emperor turned their axes upon him. Now these barbarians from the frozen North dare to call our ancient lands their own.\n\nKingdom by kingdom, we will drive them back into the sea!"
+ nv_expunge_varangian_dominion_decision_tooltip:0 "Return a [kingdom|E] of [GetTitleByKey('e_varangian_empire').GetName] to the [de_jure|E] land of [GetTitleByKey('e_byzantium').GetName]"
+ nv_expunge_varangian_dominion_decision_confirm:0 "Back to the sea with them!"
+ nv_liege_isnt_varangian_emp_tt:0 "Your [liege|E] is not the holder of [GetTitleByKey('e_varangian_empire').GetName]"
+ nv_control_varangian_kingdom_tt:0 "Your [realm|E] contains an entire [de_jure|E] [kingdom|E] of [GetTitleByKey('e_varangian_empire').GetName]"
+ nv_has_varangian_kingdom_title_tt:0 "You or a [vassal|E] hold a [kingdom|E] [title|E] of [GetTitleByKey('e_varangian_empire').GetName], and your [realm|E] contains its [capital|E] or half its [counties|E]"
+ nv_remove_varangian_kingdom_de_jure_tt:0 "A [GetTitleByKey('e_varangian_empire').GetAdjective] [kingdom|E] within your [realm|E] returns to the [de_jure|E] land of [GetTitleByKey('e_byzantium').GetName]"
+
+ # Events
+ nv_varangian_dominion.0001.t:0 "[ROOT.Char.Custom('NvDominionName')]"
+ nv_varangian_dominion.0001.desc_heir:0 "The Great City is ours. Where once our kin stood guard at the Emperor's door, now [ROOT.Char.GetFirstNameNoTooltip] sits on the imperial throne, Emperor of the Varangians.\n\nThe old lands in the North lie far across the sea. They have passed to [nv_homeland_heir.GetFirstNameNoTooltip], who will rule them in [nv_homeland_heir.GetHerHis] own name. Our future lies here, in Miklagard."
+ nv_varangian_dominion.0001.desc_broken:0 "The Great City is ours. Where once our kin stood guard at the Emperor's door, now [ROOT.Char.GetFirstNameNoTooltip] sits on the imperial throne, Emperor of the Varangians.\n\nWith no kin fit to hold the old lands in the North, they have fallen to local chieftains. There is no going back now. Our future lies here, in Miklagard."
+ nv_varangian_dominion.0001.a:0 "Hail the Varangian Emperor!"
+
+ nv_varangian_dominion.0010.t:0 "A Kingdom for the Varangians"
+ nv_varangian_dominion.0010.desc:0 "My warriors parade beneath banners of the raven and the double-headed eagle. Let the people see who rules them now, and let the scribes record which lands belong to the [GetTitleByKey('e_varangian_empire').GetName]."
+ nv_varangian_dominion.0010.a:0 "Let all [kingdom_1.GetNameNoTierNoTooltip] know my right!"
+ nv_varangian_dominion.0010.b:0 "Let all [kingdom_2.GetNameNoTierNoTooltip] know my right!"
+ nv_varangian_dominion.0010.c:0 "Let all [kingdom_3.GetNameNoTierNoTooltip] know my right!"
+
+ nv_varangian_dominion.0020.t:0 "The Varangians Cast Out"
+ nv_varangian_dominion.0020.desc:0 "The bells ring out across the land. The northern usurpers' claims are struck from the records, and the old order of the Romans is restored."
+ nv_varangian_dominion.0020.a:0 "In [kingdom_1.GetNameNoTierNoTooltip], may dark times be forgotten!"
+ nv_varangian_dominion.0020.b:0 "In [kingdom_2.GetNameNoTierNoTooltip], may dark times be forgotten!"
+ nv_varangian_dominion.0020.c:0 "In [kingdom_3.GetNameNoTierNoTooltip], may dark times be forgotten!"

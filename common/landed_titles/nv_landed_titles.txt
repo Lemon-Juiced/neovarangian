@@ -1,0 +1,18 @@
+##################################################
+# Neo-Varangian: Varangian Empire
+#
+# Mirrors e_latin_empire: no starting de jure land. Kingdoms are added with the
+# Legitimize Varangian Dominion decision and removed with Expunge Varangian Dominion.
+##################################################
+
+e_varangian_empire = {
+	color = { 128 24 32 }
+
+	definite_form = yes
+
+	capital = c_byzantion
+
+	can_create = {
+		rule_title_creation_imperial_power_projection_title_creation_trigger = yes
+	}
+}

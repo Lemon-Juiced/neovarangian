@@ -1,0 +1,14 @@
+# "Nordokratia" for Norse rulers, "Normanokratia" for Norman rulers.
+NvDominionName = {
+	type = character
+
+	text = {
+		trigger = { nv_is_norman_trigger = yes }
+		localization_key = nv_normanokratia
+	}
+
+	text = {
+		fallback = yes
+		localization_key = nv_nordokratia
+	}
+}

@@ -1,0 +1,20 @@
+﻿l_english:
+ # Grand Varangian Venture CB
+ nv_grand_varangian_venture:0 "Grand Varangian Venture"
+ nv_grand_varangian_venture_desc:0 "A king abandons his homeland with the might of an entire nation at his back, to carve out a new kingdom across the sea."
+ NV_GRAND_VA_CB_NAME:0 "Grand [varangian_adventure|E] against [DEFENDER.GetPrimaryTitle.GetNameNoTier]"
+ NV_GRAND_VA_WAR_NAME:0 "[ConcatIfNeitherEmpty('$ORDER|q$', ' ')][ATTACKER.GetPrimaryTitle.GetAdjective] Grand [varangian_adventure|E] against [DEFENDER.GetPrimaryTitle.GetNameNoTier]"
+ NV_GRAND_VA_WAR_NAME_BASE:0 "[ATTACKER.GetPrimaryTitle.GetAdjective] Grand Venture against [DEFENDER.GetPrimaryTitle.GetName]"
+ NV_GRAND_VA_KINGDOM_NAME:0 "[target_duchy.GetNameNoTierNoTooltip]"
+ nv_grand_va_event_troops:0 "Grand Varangian Host"
+ nv_grand_varangian_venture.troops_raised.tt:0 "The whole realm musters at [capital_barony.GetNameNoTierNoTooltip]"
+ nv_grand_varangian_venture.summaries.new_kingdom:0 "The conquered [duchy|E] will be raised into a new [kingdom|E] bearing its name, and your old [kingdom|E] will be left behind"
+ nv_grand_va_kings_only_tt:0 "Only [kings|E] may launch a Grand Varangian Venture"
+ nv_grand_va_once_per_life_tt:0 "Has not yet launched a Grand Varangian Venture in this lifetime"
+ nv_grand_va_consumed_tt:0 "This uses up your one Grand Varangian Venture for this lifetime"
+
+ # Norman: reclaim Coastal Warriors
+ nv_norman_reclaim_coastal_warriors_decision:0 "Remember the Northmen"
+ nv_norman_reclaim_coastal_warriors_decision_desc:0 "Though we speak the tongue of the Franks, the blood of Rollo's sea-raiders still runs in Norman veins. Let our warriors take up the ways of their forefathers once more."
+ nv_norman_reclaim_coastal_warriors_decision_tooltip:0 "Add the $tradition_fp1_coastal_warriors_name$ [tradition|E] to the Norman [culture|E]"
+ nv_norman_reclaim_coastal_warriors_decision_confirm:0 "Raise the dragon-prows!"

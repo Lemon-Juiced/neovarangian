@@ -1,0 +1,193 @@
+namespace = nv_varangian_dominion
+
+##################################################
+# 0001 - The Varangian Empire is founded (to the founder)
+##################################################
+nv_varangian_dominion.0001 = {
+	type = character_event
+	title = nv_varangian_dominion.0001.t
+	desc = {
+		first_valid = {
+			triggered_desc = {
+				trigger = { exists = scope:nv_homeland_heir }
+				desc = nv_varangian_dominion.0001.desc_heir
+			}
+			desc = nv_varangian_dominion.0001.desc_broken
+		}
+	}
+	theme = byzantine
+	override_background = { reference = ep3_city_gate }
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+	right_portrait = {
+		trigger = { exists = scope:nv_homeland_heir }
+		character = scope:nv_homeland_heir
+		animation = personality_honorable
+	}
+
+	option = {
+		name = nv_varangian_dominion.0001.a
+	}
+}
+
+##################################################
+# 0010 - Legitimize Varangian Dominion: choose a kingdom
+# Mirrors ep3_frankokratia_events.0080
+##################################################
+nv_varangian_dominion.0010 = {
+	type = character_event
+	title = nv_varangian_dominion.0010.t
+	desc = nv_varangian_dominion.0010.desc
+	theme = byzantine
+	override_background = { reference = ep3_city_gate }
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+
+	immediate = {
+		title:e_byzantium = {
+			if = {
+				limit = {
+					any_in_de_jure_hierarchy = {
+						nv_legitimizable_kingdom_trigger = yes
+						any_de_jure_county = { this = root.capital_county }
+					}
+				}
+				random_in_de_jure_hierarchy = {
+					limit = {
+						nv_legitimizable_kingdom_trigger = yes
+						any_de_jure_county = { this = root.capital_county }
+					}
+					save_scope_as = kingdom_1
+				}
+			}
+			else = {
+				random_in_de_jure_hierarchy = {
+					limit = { nv_legitimizable_kingdom_trigger = yes }
+					save_scope_as = kingdom_1
+				}
+			}
+			random_in_de_jure_hierarchy = {
+				limit = {
+					nv_legitimizable_kingdom_trigger = yes
+					this != scope:kingdom_1
+				}
+				save_scope_as = kingdom_2
+			}
+			random_in_de_jure_hierarchy = {
+				limit = {
+					nv_legitimizable_kingdom_trigger = yes
+					NOR = {
+						this = scope:kingdom_1
+						this ?= scope:kingdom_2
+					}
+				}
+				save_scope_as = kingdom_3
+			}
+		}
+	}
+
+	option = {
+		name = nv_varangian_dominion.0010.a
+		nv_legitimize_varangian_kingdom_effect = { KINGDOM = scope:kingdom_1 }
+	}
+	option = {
+		trigger = {
+			exists = scope:kingdom_2
+			is_ai = no
+		}
+		name = nv_varangian_dominion.0010.b
+		nv_legitimize_varangian_kingdom_effect = { KINGDOM = scope:kingdom_2 }
+	}
+	option = {
+		trigger = {
+			exists = scope:kingdom_3
+			is_ai = no
+		}
+		name = nv_varangian_dominion.0010.c
+		nv_legitimize_varangian_kingdom_effect = { KINGDOM = scope:kingdom_3 }
+	}
+}
+
+##################################################
+# 0020 - Expunge Varangian Dominion: choose a kingdom
+# Mirrors ep3_frankokratia_events.0090
+##################################################
+nv_varangian_dominion.0020 = {
+	type = character_event
+	title = nv_varangian_dominion.0020.t
+	desc = nv_varangian_dominion.0020.desc
+	theme = byzantine
+	override_background = { reference = ep3_holy_site_orthodox }
+	left_portrait = {
+		character = root
+		animation = personality_bold
+	}
+
+	immediate = {
+		title:e_varangian_empire = {
+			if = {
+				limit = {
+					any_in_de_jure_hierarchy = {
+						nv_expungeable_kingdom_trigger = yes
+						any_de_jure_county = { this = root.capital_county }
+					}
+				}
+				random_in_de_jure_hierarchy = {
+					limit = {
+						nv_expungeable_kingdom_trigger = yes
+						any_de_jure_county = { this = root.capital_county }
+					}
+					save_scope_as = kingdom_1
+				}
+			}
+			else = {
+				random_in_de_jure_hierarchy = {
+					limit = { nv_expungeable_kingdom_trigger = yes }
+					save_scope_as = kingdom_1
+				}
+			}
+			random_in_de_jure_hierarchy = {
+				limit = {
+					nv_expungeable_kingdom_trigger = yes
+					this != scope:kingdom_1
+				}
+				save_scope_as = kingdom_2
+			}
+			random_in_de_jure_hierarchy = {
+				limit = {
+					nv_expungeable_kingdom_trigger = yes
+					NOR = {
+						this = scope:kingdom_1
+						this ?= scope:kingdom_2
+					}
+				}
+				save_scope_as = kingdom_3
+			}
+		}
+	}
+
+	option = {
+		name = nv_varangian_dominion.0020.a
+		nv_expunge_varangian_kingdom_effect = { KINGDOM = scope:kingdom_1 }
+	}
+	option = {
+		trigger = {
+			exists = scope:kingdom_2
+			is_ai = no
+		}
+		name = nv_varangian_dominion.0020.b
+		nv_expunge_varangian_kingdom_effect = { KINGDOM = scope:kingdom_2 }
+	}
+	option = {
+		trigger = {
+			exists = scope:kingdom_3
+			is_ai = no
+		}
+		name = nv_varangian_dominion.0020.c
+		nv_expunge_varangian_kingdom_effect = { KINGDOM = scope:kingdom_3 }
+	}
+}

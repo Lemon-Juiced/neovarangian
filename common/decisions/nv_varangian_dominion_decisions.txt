@@ -1,0 +1,486 @@
+##################################################
+# Neo-Varangian: Varangian Dominion decisions
+##################################################
+
+### Plan the Taking of Miklagard ###
+# Unlocks the Nordokratia / Normanokratia war against the Byzantine Emperor.
+nv_plan_miklagard_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/fp1_decision_forge_jomsvikings.dds"
+	}
+	desc = nv_plan_miklagard_decision_desc
+	selection_tooltip = nv_plan_miklagard_decision_tooltip
+	decision_group_type = major
+
+	# Player-only: only one Varangian Empire can exist, so the AI must not claim it first.
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 0
+		hegemony = 0
+	}
+
+	is_shown = {
+		is_ai = no
+		nv_varangian_culture_trigger = yes
+		highest_held_title_tier >= tier_kingdom
+		highest_held_title_tier <= tier_empire
+		NOT = { has_variable = nv_miklagard_ambition }
+		NOT = { exists = title:e_varangian_empire.holder }
+		exists = title:e_byzantium.holder
+		NOT = { this = title:e_byzantium.holder }
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = nv_must_be_independent_tt
+			top_liege = this
+		}
+		prestige_level >= 2
+	}
+
+	is_valid_showing_failures_only = {
+		is_capable_adult = yes
+		is_imprisoned = no
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = medium_prestige_value
+	}
+
+	effect = {
+		custom_tooltip = nv_plan_miklagard_decision_effect_tt
+		set_variable = {
+			name = nv_miklagard_ambition
+			value = yes
+		}
+	}
+
+	ai_potential = {
+		always = no
+	}
+
+	ai_will_do = {
+		base = 0
+	}
+}
+
+### Legitimize Varangian Dominion ###
+# Mirrors legitimize_latin_dominion_decision.
+nv_legitimize_varangian_dominion_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_hold_triumph.dds"
+	}
+	desc = nv_legitimize_varangian_dominion_decision_desc
+	selection_tooltip = nv_legitimize_varangian_dominion_decision_tooltip
+	decision_group_type = roman
+
+	cooldown = { days = 60 }
+
+	is_shown = {
+		primary_title ?= title:e_varangian_empire
+		title:e_byzantium = {
+			any_de_jure_county = { }
+		}
+	}
+
+	is_valid = {
+		custom_tooltip = {
+			text = nv_is_varangian_emperor_tt
+			primary_title = title:e_varangian_empire
+		}
+		OR = {
+			custom_tooltip = {
+				text = control_byzantine_kingdom_tt
+				title:e_byzantium = {
+					any_in_de_jure_hierarchy = {
+						tier = tier_kingdom
+						NOT = { this = title:e_byzantium }
+						any_de_jure_county = {
+							percent >= 0.8
+							holder.top_liege = {
+								this = root
+							}
+						}
+					}
+				}
+			}
+			custom_tooltip = {
+				text = nv_varangian_capital_byzantine_kingdom_tt
+				title:e_byzantium = {
+					any_in_de_jure_hierarchy = {
+						tier = tier_kingdom
+						NOT = { this = title:e_byzantium }
+						any_de_jure_county = {
+							this = root.capital_county
+						}
+					}
+				}
+			}
+		}
+		custom_tooltip = {
+			text = hold_byz_kingdom_title_tt
+			title:e_byzantium = {
+				any_in_de_jure_hierarchy = {
+					tier = tier_kingdom
+					NOT = { this = title:e_byzantium }
+					holder ?= {
+						OR = {
+							this = root
+							top_liege = root
+						}
+					}
+					OR = {
+						any_de_jure_county = {
+							this = root.capital_county
+						}
+						any_de_jure_county = {
+							percent >= 0.8
+							holder.top_liege = {
+								this = root
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				is_ai = no
+				has_legitimacy = yes
+			}
+			legitimacy_level >= 3
+		}
+		trigger_if = {
+			limit = {
+				has_legitimacy = yes
+				is_ai = yes
+			}
+			legitimacy_level >= 2
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		trigger_if = {
+			limit = {
+				is_ai = no
+			}
+			is_available = yes
+		}
+		trigger_else = {
+			is_alive = yes
+			is_imprisoned = no
+			is_incapable = no
+		}
+	}
+
+	cost = {
+		prestige = {
+			value = {
+				add = massive_prestige_value
+				if = {
+					limit = {
+						is_ai = yes
+					}
+					multiply = 0.75
+				}
+			}
+		}
+		piety = {
+			value = {
+				add = massive_piety_value
+			}
+			if = {
+				limit = {
+					is_ai = yes
+				}
+				multiply = 0.1
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = nv_gain_byz_kingdom_de_jure_tt
+		custom_tooltip = nv_legitimize_varangian_control_tt
+		custom_tooltip = nv_legitimize_varangian_cultural_acceptance_tt
+		show_as_tooltip = {
+			if = {
+				limit = {
+					government_has_flag = government_has_influence
+				}
+				custom_tooltip = legitimize_latin_holder_influence_tt
+			}
+			else = {
+				custom_tooltip = legitimize_latin_holder_legitimacy_tt
+			}
+		}
+		custom_tooltip = nv_varangian_de_jure_lost_on_title_loss_tt
+		custom_tooltip = nv_byzantines_threaten_varangian_titles_tt
+
+		trigger_event = nv_varangian_dominion.0010
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 0
+		kingdom = 0
+		empire = 6
+		hegemony = 0
+	}
+
+	ai_potential = {
+		primary_title ?= {
+			this = title:e_varangian_empire
+		}
+		title:e_byzantium = {
+			any_in_de_jure_hierarchy = {
+				tier = tier_kingdom
+				exists = holder
+				holder.top_liege = {
+					this = root
+				}
+			}
+		}
+		NOT = {
+			any_held_title = {
+				this = title:e_byzantium
+			}
+		}
+	}
+
+	ai_will_do = {
+		base = 100
+	}
+}
+
+### Expunge Varangian Dominion ###
+# Mirrors expunge_latin_dominion_decision.
+nv_expunge_varangian_dominion_decision = {
+	picture = {
+		reference = "gfx/interface/illustrations/decisions/ep3_decision_hold_triumph.dds"
+	}
+	desc = nv_expunge_varangian_dominion_decision_desc
+	selection_tooltip = nv_expunge_varangian_dominion_decision_tooltip
+	decision_group_type = roman
+
+	cooldown = { days = 60 }
+
+	is_shown = {
+		# Varangian land needs to exist.
+		title:e_varangian_empire = {
+			any_in_de_jure_hierarchy = {
+				tier <= tier_kingdom
+			}
+		}
+		nv_byzantine_loyalist_trigger = yes
+		OR = {
+			capital_province ?= {
+				OR = {
+					geographical_region = world_middle_east
+					geographical_region = world_europe_south
+					geographical_region = world_europe_east
+					geographical_region = world_asia_minor
+					geographical_region = world_steppe_west
+				}
+			}
+			AND = {
+				exists = title:e_byzantium.holder
+				this = title:e_byzantium.holder
+			}
+			AND = {
+				exists = title:h_roman_empire.holder
+				this = title:h_roman_empire.holder
+			}
+			AND = {
+				exists = title:h_eastern_roman_empire.holder
+				this = title:h_eastern_roman_empire.holder
+			}
+		}
+	}
+
+	is_valid = {
+		trigger_if = {
+			limit = {
+				top_liege != this
+			}
+			custom_tooltip = {
+				text = nv_liege_isnt_varangian_emp_tt
+				NOT = {
+					top_liege = {
+						primary_title = title:e_varangian_empire
+					}
+				}
+			}
+		}
+		trigger_else = {
+			OR = {
+				highest_held_title_tier <= tier_kingdom
+				custom_tooltip = {
+					exists = title:e_byzantium.holder
+					this = title:e_byzantium.holder
+					text = holds_byz_emp_tt
+				}
+				custom_tooltip = {
+					exists = title:h_roman_empire.holder
+					this = title:h_roman_empire.holder
+					text = holds_roman_emp_tt
+				}
+				custom_tooltip = {
+					exists = title:h_eastern_roman_empire.holder
+					this = title:h_eastern_roman_empire.holder
+					text = holds_roman_emp_tt
+				}
+			}
+		}
+		OR = {
+			# Controls an entire Varangian kingdom
+			custom_tooltip = {
+				text = nv_control_varangian_kingdom_tt
+				title:e_varangian_empire = {
+					any_in_de_jure_hierarchy = {
+						tier = tier_kingdom
+						NOT = { this = title:e_varangian_empire }
+						any_de_jure_county = {
+							percent >= 1
+							holder.top_liege = {
+								this = root
+							}
+						}
+					}
+				}
+			}
+			# Controls half (or the capital) and holds the kingdom title
+			custom_tooltip = {
+				text = nv_has_varangian_kingdom_title_tt
+				title:e_varangian_empire = {
+					any_in_de_jure_hierarchy = {
+						tier = tier_kingdom
+						NOT = { this = title:e_varangian_empire }
+						holder ?= {
+							OR = {
+								this = root
+								top_liege = root
+							}
+						}
+						OR = {
+							any_de_jure_county = {
+								this = root.capital_county
+							}
+							any_de_jure_county = {
+								percent >= 0.5
+								holder.top_liege = {
+									this = root
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		trigger_if = {
+			limit = {
+				has_legitimacy = yes
+				is_ai = no
+			}
+			legitimacy_level >= 2
+		}
+		trigger_if = {
+			limit = {
+				has_legitimacy = yes
+				is_ai = yes
+			}
+			legitimacy_level >= 1
+		}
+	}
+
+	is_valid_showing_failures_only = {
+		trigger_if = {
+			limit = {
+				is_ai = no
+			}
+			is_available = yes
+		}
+		trigger_else = {
+			is_alive = yes
+			is_imprisoned = no
+			is_incapable = no
+		}
+		is_at_war = no
+	}
+
+	cost = {
+		prestige = {
+			value = {
+				add = major_prestige_value
+				if = {
+					limit = {
+						is_ai = yes
+					}
+					multiply = 0.5
+				}
+			}
+		}
+		piety = {
+			value = {
+				add = major_piety_value
+				if = {
+					limit = {
+						is_ai = yes
+					}
+					multiply = 0.5
+				}
+			}
+		}
+	}
+
+	effect = {
+		custom_tooltip = nv_remove_varangian_kingdom_de_jure_tt
+		custom_tooltip = legitimize_byz_control_tt
+		custom_tooltip = legitimize_byz_claim_tt
+		show_as_tooltip = {
+			expunge_latin_dominion_effect = yes
+		}
+		trigger_event = nv_varangian_dominion.0020
+	}
+
+	ai_check_interval_by_tier = {
+		barony = 0
+		county = 0
+		duchy = 36
+		kingdom = 9
+		empire = 9
+		hegemony = 9
+	}
+
+	ai_potential = {
+		is_available = yes
+		OR = {
+			highest_held_title_tier >= tier_kingdom
+			realm_size >= 10
+		}
+		nv_byzantine_loyalist_trigger = yes
+		title:e_varangian_empire = {
+			any_in_de_jure_hierarchy = {
+				nv_expungeable_kingdom_trigger = yes
+			}
+		}
+	}
+
+	ai_will_do = {
+		base = 75
+		modifier = {
+			add = 25
+			primary_title = title:e_byzantium
+		}
+		modifier = {
+			add = -100
+			any_held_title = {
+				this = title:e_varangian_empire
+			}
+		}
+	}
+}

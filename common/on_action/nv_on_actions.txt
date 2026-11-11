@@ -1,0 +1,39 @@
+# Neo-Varangian on_actions.
+# Only adds to the on_actions list, so it merges with the base game's yearly_global_pulse.
+yearly_global_pulse = {
+	on_actions = { nv_varangian_yearly_pulse }
+}
+
+# Root does not exist (global pulse).
+# If the Varangian Empire has fallen, its de jure kingdoms return to Byzantium.
+# Mirrors the Latin Empire clean-up in the base game's yearly_global_pulse.
+nv_varangian_yearly_pulse = {
+	effect = {
+		if = {
+			limit = {
+				title:e_varangian_empire = {
+					any_in_de_jure_hierarchy = { tier = tier_kingdom }
+				}
+				OR = {
+					NOT = { exists = title:e_varangian_empire.holder }
+					title:e_varangian_empire.holder ?= {
+						NOT = {
+							any_realm_county = {
+								OR = {
+									empire ?= title:e_varangian_empire
+									empire ?= title:e_byzantium
+								}
+							}
+						}
+					}
+				}
+			}
+			title:e_varangian_empire = {
+				every_in_de_jure_hierarchy = {
+					limit = { tier = tier_kingdom }
+					set_de_jure_liege_title = title:e_byzantium
+				}
+			}
+		}
+	}
+}

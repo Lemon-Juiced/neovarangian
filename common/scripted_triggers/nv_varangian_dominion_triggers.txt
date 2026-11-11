@@ -1,0 +1,117 @@
+##################################################
+# Neo-Varangian: Varangian Dominion triggers
+##################################################
+
+# Norman, or descended from Norman.
+nv_is_norman_trigger = {
+	culture ?= {
+		OR = {
+			this = culture:norman
+			any_parent_culture_or_above = { this = culture:norman }
+		}
+	}
+}
+
+# Norse (any North Germanic heritage culture) or Norman.
+nv_varangian_culture_trigger = {
+	OR = {
+		culture ?= { has_cultural_pillar = heritage_north_germanic }
+		nv_is_norman_trigger = yes
+	}
+}
+
+# Greek, Roman, Orthodox-family or holder of a Roman/Byzantine imperial title.
+# Same set of people the base game lets use Expunge Latin Dominion.
+nv_byzantine_loyalist_trigger = {
+	OR = {
+		culture ?= culture:greek
+		culture ?= culture:roman
+		culture ?= { any_parent_culture_or_above = { this = culture:greek } }
+		ep3_orthodox_faith_trigger = yes
+		faith ?= faith:hellenic_pagan
+		AND = {
+			exists = title:e_byzantium.holder
+			this = title:e_byzantium.holder
+		}
+		AND = {
+			exists = title:h_roman_empire.holder
+			this = title:h_roman_empire.holder
+		}
+		AND = {
+			exists = title:h_eastern_roman_empire.holder
+			this = title:h_eastern_roman_empire.holder
+		}
+	}
+}
+
+# A Byzantine de jure kingdom the Varangian Emperor (root) can legitimize.
+# Mirrors ep3_frankokratia_events_0080_kingdom_trigger.
+nv_legitimizable_kingdom_trigger = {
+	tier = tier_kingdom
+	NOT = { this = title:e_byzantium }
+	holder ?= {
+		top_liege = root
+	}
+	OR = {
+		any_de_jure_county = {
+			this = root.capital_county
+		}
+		any_de_jure_county = {
+			percent >= 0.8
+			holder.top_liege = {
+				this = root
+			}
+		}
+	}
+}
+
+# A Varangian de jure kingdom a Byzantine loyalist (root) can expunge.
+# Mirrors ep3_frankokratia_events_0090_kingdom_trigger.
+nv_expungeable_kingdom_trigger = {
+	tier = tier_kingdom
+	NOT = { this = title:e_varangian_empire }
+	OR = {
+		# Controls the entire kingdom
+		any_de_jure_county = {
+			percent >= 1
+			holder.top_liege = {
+				this = root
+			}
+		}
+		# Controls half (or the capital) and holds the kingdom title
+		AND = {
+			holder ?= {
+				top_liege = root
+			}
+			OR = {
+				any_de_jure_county = {
+					this = root.capital_county
+				}
+				any_de_jure_county = {
+					percent >= 0.5
+					holder.top_liege = {
+						this = root
+					}
+				}
+			}
+		}
+	}
+}
+
+# A close relative who can take over the homeland when the founder leaves it behind.
+nv_homeland_successor_trigger = {
+	is_alive = yes
+	is_imprisoned = no
+	NOT = { has_trait = incapable }
+	NOT = { this = scope:nv_varangian_founder }
+	# Not the person who will inherit the new empire, so the realms stay separate.
+	trigger_if = {
+		limit = { exists = scope:nv_varangian_founder.primary_heir }
+		NOT = { this = scope:nv_varangian_founder.primary_heir }
+	}
+	# Either unlanded, or already one of the founder's vassals.
+	OR = {
+		is_ruler = no
+		top_liege = scope:nv_varangian_founder
+	}
+}

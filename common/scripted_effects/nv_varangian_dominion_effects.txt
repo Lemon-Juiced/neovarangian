@@ -1,0 +1,426 @@
+##################################################
+# Neo-Varangian: Varangian Dominion effects
+##################################################
+
+# Run in the attacker's scope on victory in nv_varangian_dominion_cb.
+# Expects: scope:nv_target_kingdom (the Byzantine kingdom fought over), scope:defender.
+nv_found_varangian_empire_effect = {
+	save_scope_as = nv_varangian_founder
+
+	# Remember whether we were tribal, so the homeland can stay tribal when we leave it.
+	if = {
+		limit = { government_has_flag = government_is_tribal }
+		save_scope_value_as = { name = nv_founder_was_tribal value = yes }
+	}
+
+	########## 1. The conquered kingdom's crown ##########
+	if = {
+		limit = { scope:nv_target_kingdom = { is_title_created = no } }
+		create_title_and_vassal_change = {
+			type = created
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		scope:nv_target_kingdom = {
+			change_title_holder = {
+				holder = scope:nv_varangian_founder
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+	}
+	else_if = {
+		limit = {
+			scope:nv_target_kingdom.holder ?= {
+				OR = {
+					this = scope:defender
+					target_is_liege_or_above = scope:defender
+				}
+			}
+		}
+		create_title_and_vassal_change = {
+			type = conquest
+			save_scope_as = change
+			add_claim_on_loss = yes
+		}
+		scope:nv_target_kingdom = {
+			change_title_holder = {
+				holder = scope:nv_varangian_founder
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+	}
+
+	########## 2. The Varangian Empire ##########
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	title:e_varangian_empire = {
+		change_title_holder = {
+			holder = scope:nv_varangian_founder
+			change = scope:change
+		}
+	}
+	resolve_title_and_vassal_change = scope:change
+
+	########## 3. Make sure we personally hold land in the new kingdom ##########
+	# If every county was kept by vassals who switched sides, take the best one for ourselves.
+	if = {
+		limit = {
+			NOT = {
+				any_held_title = {
+					tier = tier_county
+					kingdom ?= scope:nv_target_kingdom
+				}
+			}
+			scope:nv_target_kingdom = {
+				any_de_jure_county = {
+					holder.top_liege ?= scope:nv_varangian_founder
+				}
+			}
+		}
+		scope:nv_target_kingdom = {
+			ordered_de_jure_county = {
+				limit = { holder.top_liege ?= scope:nv_varangian_founder }
+				order_by = development_level
+				save_scope_as = nv_seized_county
+			}
+		}
+		create_title_and_vassal_change = {
+			type = revoked
+			save_scope_as = change
+			add_claim_on_loss = yes
+		}
+		scope:nv_seized_county = {
+			change_title_holder = {
+				holder = scope:nv_varangian_founder
+				change = scope:change
+				take_baronies = yes
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+	}
+
+	########## 4. Move the capital to Miklagard ##########
+	if = {
+		limit = { title:c_byzantion.holder ?= scope:nv_varangian_founder }
+		set_realm_capital = title:c_byzantion
+	}
+	else_if = {
+		limit = { scope:nv_target_kingdom.title_capital_county.holder ?= scope:nv_varangian_founder }
+		set_realm_capital = scope:nv_target_kingdom.title_capital_county
+	}
+	else_if = {
+		limit = {
+			any_held_title = {
+				tier = tier_county
+				kingdom ?= scope:nv_target_kingdom
+			}
+		}
+		ordered_held_title = {
+			limit = {
+				tier = tier_county
+				kingdom ?= scope:nv_target_kingdom
+			}
+			order_by = development_level
+			save_temporary_scope_as = nv_new_capital
+		}
+		set_realm_capital = scope:nv_new_capital
+	}
+
+	########## 5. Leave the homeland behind ##########
+	custom_tooltip = nv_varangian_dominion.summaries.homeland
+	hidden_effect = { nv_leave_homeland_behind_effect = yes }
+
+	########## 6. Govern the new realm ##########
+	# The Varangian Empire is feudal, never administrative (and no longer tribal).
+	if = {
+		limit = {
+			OR = {
+				government_has_flag = government_is_tribal
+				government_has_flag = government_is_administrative
+			}
+		}
+		change_government = feudal_government
+	}
+	custom_tooltip = fp1_varangian_adventurer_conquest.summaries.control_rebate
+	trigger_event = fp1_varangian_adventures.0001
+	add_prestige_experience = massive_prestige_value
+
+	set_global_variable = {
+		name = nv_varangian_dominion_occurred
+		value = current_date
+	}
+
+	hidden_effect = {
+		every_courtier = { set_location_to_default = yes }
+		every_prisoner = { set_location_to_default = yes }
+	}
+
+	trigger_event = nv_varangian_dominion.0001
+}
+
+# Hands the founder's old lands to a relative as an independent realm,
+# or, if there is nobody suitable, lets them break apart (like a Varangian Venture).
+nv_leave_homeland_behind_effect = {
+	# Everything the founder holds that is not part of the new kingdom/empire.
+	every_held_title = {
+		limit = {
+			tier >= tier_county
+			NOR = {
+				this = title:e_varangian_empire
+				this = scope:nv_target_kingdom
+				kingdom ?= scope:nv_target_kingdom
+				is_head_of_faith = yes
+			}
+		}
+		add_to_list = nv_homeland_titles
+	}
+	every_vassal = {
+		limit = {
+			NOT = {
+				any_held_title = {
+					tier >= tier_county
+					kingdom ?= scope:nv_target_kingdom
+				}
+			}
+		}
+		add_to_list = nv_homeland_vassals
+	}
+
+	# Pick the successor: oldest suitable child, then sibling, then any close family.
+	if = {
+		limit = { any_child = { nv_homeland_successor_trigger = yes } }
+		ordered_child = {
+			limit = { nv_homeland_successor_trigger = yes }
+			order_by = age
+			save_scope_as = nv_homeland_heir
+		}
+	}
+	else_if = {
+		limit = { any_sibling = { nv_homeland_successor_trigger = yes } }
+		ordered_sibling = {
+			limit = { nv_homeland_successor_trigger = yes }
+			order_by = age
+			save_scope_as = nv_homeland_heir
+		}
+	}
+	else_if = {
+		limit = { any_close_or_extended_family_member = { nv_homeland_successor_trigger = yes } }
+		ordered_close_or_extended_family_member = {
+			limit = { nv_homeland_successor_trigger = yes }
+			order_by = age
+			save_scope_as = nv_homeland_heir
+		}
+	}
+
+	if = {
+		limit = { exists = scope:nv_homeland_heir }
+		# Hand over every homeland title.
+		create_title_and_vassal_change = {
+			type = granted
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		every_in_list = {
+			list = nv_homeland_titles
+			change_title_holder = {
+				holder = scope:nv_homeland_heir
+				change = scope:change
+				take_baronies = yes
+			}
+		}
+		every_in_list = {
+			list = nv_homeland_vassals
+			change_liege = {
+				liege = scope:nv_homeland_heir
+				change = scope:change
+			}
+		}
+		resolve_title_and_vassal_change = scope:change
+		# Then set them free.
+		create_title_and_vassal_change = {
+			type = independency
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		scope:nv_homeland_heir = {
+			becomes_independent = { change = scope:change }
+		}
+		resolve_title_and_vassal_change = scope:change
+		scope:nv_homeland_heir = {
+			if = {
+				limit = { exists = scope:nv_founder_was_tribal }
+				change_government = tribal_government
+			}
+			add_opinion = {
+				target = scope:nv_varangian_founder
+				modifier = grateful_opinion
+				opinion = 40
+			}
+			add_truce_both_ways = {
+				character = scope:nv_varangian_founder
+				days = 7300
+				name = NV_HOMELAND_TRUCE_NAME
+			}
+		}
+	}
+	else = {
+		# Nobody to take over: the old realm breaks apart, as with a Varangian Venture.
+		every_in_list = {
+			list = nv_homeland_titles
+			limit = { tier = tier_county }
+			save_temporary_scope_as = current_county
+			create_character = {
+				location = scope:current_county.title_province
+				template = old_country_local_warlord_template
+				save_temporary_scope_as = local_warlord
+			}
+			create_title_and_vassal_change = {
+				type = granted
+				save_scope_as = change
+				add_claim_on_loss = no
+			}
+			scope:current_county = {
+				change_title_holder = {
+					holder = scope:local_warlord
+					change = scope:change
+					take_baronies = yes
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+			create_title_and_vassal_change = {
+				type = independency
+				save_scope_as = change
+				add_claim_on_loss = no
+			}
+			scope:local_warlord = {
+				becomes_independent = { change = scope:change }
+				save_scope_as = truce_loc
+				add_truce_both_ways = {
+					character = scope:nv_varangian_founder
+					days = 14600
+					name = FP1_VARANGIAN_ADVENTURER_INDEPENDENCE_TRUCE_NAME
+				}
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+		every_in_list = {
+			list = nv_homeland_titles
+			limit = { tier > tier_county }
+			save_temporary_scope_as = nv_excess_title
+			scope:nv_varangian_founder = { destroy_title = scope:nv_excess_title }
+		}
+		every_in_list = {
+			list = nv_homeland_vassals
+			create_title_and_vassal_change = {
+				type = independency
+				save_scope_as = change
+				add_claim_on_loss = no
+			}
+			becomes_independent = { change = scope:change }
+			save_scope_as = truce_loc
+			add_truce_both_ways = {
+				character = scope:nv_varangian_founder
+				days = 14600
+				name = FP1_VARANGIAN_ADVENTURER_INDEPENDENCE_TRUCE_NAME
+			}
+			resolve_title_and_vassal_change = scope:change
+		}
+	}
+}
+
+# Moves one Byzantine kingdom under the Varangian Empire. Root = Varangian Emperor.
+# Mirrors an option of ep3_frankokratia_events.0080.
+nv_legitimize_varangian_kingdom_effect = {
+	$KINGDOM$ = {
+		set_de_jure_liege_title = title:e_varangian_empire
+		every_de_jure_county = {
+			custom = nv_every_county_in_kingdom
+			limit = {
+				exists = holder
+				holder.top_liege = root
+				holder = {
+					NOT = { is_at_war_with = root }
+				}
+			}
+			change_county_control = medium_county_control_gain
+			if = {
+				limit = {
+					culture = {
+						NOR = {
+							this = root.culture
+							is_in_list = kingdom_cultures
+						}
+					}
+				}
+				culture = { add_to_list = kingdom_cultures }
+			}
+		}
+		save_scope_as = swapped_kingdom
+	}
+	every_in_list = {
+		list = kingdom_cultures
+		change_cultural_acceptance = {
+			target = root.culture
+			value = medium_cultural_acceptance_value
+			desc = nv_cultural_acceptance_varangians_legitimized
+		}
+	}
+	if = {
+		limit = {
+			$KINGDOM$.holder = {
+				this != root
+			}
+		}
+		reverse_add_opinion = {
+			target = $KINGDOM$.holder
+			modifier = loyalty_opinion
+			opinion = 40
+		}
+	}
+	else_if = {
+		limit = {
+			government_has_flag = government_has_influence
+		}
+		change_influence = major_influence_gain
+	}
+	else = {
+		add_legitimacy = medium_legitimacy_gain
+	}
+	custom_tooltip = nv_varangian_de_jure_lost_on_title_loss_tt
+	custom_tooltip = nv_byzantines_threaten_varangian_titles_tt
+}
+
+# Returns one Varangian kingdom to Byzantium. Root = Byzantine loyalist.
+# Mirrors an option of ep3_frankokratia_events.0090.
+nv_expunge_varangian_kingdom_effect = {
+	$KINGDOM$ = {
+		set_de_jure_liege_title = title:e_byzantium
+		every_de_jure_county = {
+			custom = nv_every_county_in_kingdom
+			limit = {
+				holder.top_liege = root
+				holder = {
+					NOT = { is_at_war_with = root }
+				}
+			}
+			change_county_control = medium_county_control_gain
+		}
+		save_scope_as = swapped_kingdom
+	}
+	if = {
+		limit = {
+			NOR = {
+				any_held_title = { this = $KINGDOM$ }
+				has_strong_claim_on = $KINGDOM$
+			}
+		}
+		add_pressed_claim = $KINGDOM$
+	}
+	# Same 20-year boost the base game gives for expunging the Latins.
+	expunge_latin_dominion_effect = yes
+}
